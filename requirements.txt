@@ -1,0 +1,14 @@
+ase>=3.22.0
+h5py>=3.6.0
+interpolation==2.2.1
+mkl
+mkl-devel
+mkl-include
+numba<=0.58
+numpy>=1.20.3,<1.25
+psutil
+pyscf>=2.1
+pyyaml
+scikit-learn>=1.0.1
+scipy>=1.7.1
+sympy

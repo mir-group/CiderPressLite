@@ -1,0 +1,14 @@
+.idea/
+build/
+*.egg-info/
+functionals/
+*.out
+*.err
+*.npy
+*.npz
+*.hdf5
+*.pth
+*.so
+*.o
+*.pyc
+*.png
