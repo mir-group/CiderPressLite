@@ -28,9 +28,7 @@ import yaml
 
 atoms = bulk('Ge')
 
-with open('functionals/TEST_CIDER_MGGA.yaml', 'r') as f:
-    mlfunc = yaml.load(f, Loader=yaml.CLoader)
-mlfunc = 'functionals/TEST_CIDER_MGGA.yaml'
+mlfunc = 'functionals/CIDER23_NL_MGGA.yaml'
 
 # This is the initializer for CIDER functionals for GPAW
 xc = get_cider_functional(

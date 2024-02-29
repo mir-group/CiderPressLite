@@ -31,27 +31,34 @@ conda create -n <my_env> python=3.11
 conda activate <my_env>
 ```
 Python 3.9-3.11 (not 3.12) are supported. In later versions, we will tryo to move away from deprecated `distutils` tools so that we can support Python 3.12.
-2. Install compilers and libxc. You can also use your own compilers, but this step helps ensure that everything is compatible. Note that all these compilers (plus libxc) must be installed via conda in one step, or else there will be compiler and library compatibility issues.
+2. Install dependencies (three options). **Option 1**: The simplest way to do this is to use `full_env.yml`:
 ```bash
-conda install openmpi-mpicc gfortran libxc gxx gcc
+conda env update --file <CiderPressLite>/full_env.yaml
 ```
-You may exclude the `openmpi-mpicc` and `libxc` compilers if you do not want to use GPAW.
-3. Install MKL
+**Option 2**: (Preferred option for multi-node jobs) If you find compatibility issues of the conda openmpi with your cluster (or just prefer your own compilers), you can provide your own MPI, C compiler, and Fortran compiler, and install the other dependencies using `nocomp_env.yml`:
+```bash
+conda env update --file <CiderPressLite>/nocomp_env.yaml
+```
+**Option 3**: As one more option, you can install components more manually. Start with the compilers and libxc. You can also use your own compilers, but this step helps ensure that everything is compatible. Note that all these compilers (plus libxc) must be installed via conda in one step, or else there will be compiler and library compatibility issues.
+```bash
+conda install openmpi-mpicc gfortran libxc conda-forge::fftw gxx gcc
+```
+You may exclude `openmpi-mpicc`, `fftw`, and `libxc` if you will not be using the GPAW interface. Next, Install MKL
 ```bash
 conda install mkl mkl-devel mkl-include mkl_fft
 ```
-4. Install other dependencies
+Finally, install the other dependencies
 ```bash
 cd <CiderPressLite>
 pip install -r requirements.txt
 ```
-5. Build C and Fortran extensions and add to `PYTHONPATH`
+5. Build C and Fortran extensions and install CiderPress
 ```bash
 python setup.py build_ext --inplace
 python setup.py build
 python setup.py install
 ```
-6. (If using GPAW) Install GPAW. We recommend using our siteconfig.py to link gpaw to MPI and MKL for simplicity and speed. (gitlab.com/gpaw/gpaw)
+6. (If using GPAW) Install GPAW from source. We recommend using our siteconfig.py to link gpaw to MPI and MKL for simplicity and speed. (gitlab.com/gpaw/gpaw)
 ```bash
 cd <place you want to save the GPAW source>
 git clone https://gitlab.com/gpaw/gpaw.git
@@ -62,13 +69,6 @@ python setup.py build
 python setup.py install
 ```
 Note: Currently CiderPress does not support the new GPAW version (gpaw.new), but we plan to support it in the future.
-
-```bash
-export MKLROOT=$CONDA_PREFIX
-export LD_LIBRARY_PATH=$CONDA_PREFIX:$LD_LIBRARY_PATH
-export LIBRARY_PATH=$CONDA_PREFIX:$LIBRARY_PATH
-export C_INCLUDE_PATH=$CONDA_PREFIX:$C_INCLUDE_PATH
-```
 
 ## How can I run a CIDER calculation?
 
