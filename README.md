@@ -32,6 +32,7 @@ conda create -n <my_env> python=3.11
 conda activate <my_env>
 ```
 Python 3.9-3.11 (not 3.12) are supported. In later versions, we will tryo to move away from deprecated `distutils` tools so that we can support Python 3.12.
+
 2. Install dependencies (three options).
 **Option 1**: (Preferred option for multi-node jobs) If you provide your own MPI, C compiler, and Fortran compiler, you can install all the other dependencies using `nocomp_env.yml`:
 ```bash
@@ -54,10 +55,12 @@ Finally, install the other dependencies
 cd <CiderPressLite>
 pip install -r requirements.txt
 ```
+
 3. Build C and Fortran extensions and install CiderPress
 ```bash
 python setup.py build install
 ```
+
 4. (If using GPAW) Install GPAW from source. We recommend using our siteconfig.py to link gpaw to MPI and MKL for simplicity and speed. (gitlab.com/gpaw/gpaw)
 ```bash
 cd <place you want to save the GPAW source>
