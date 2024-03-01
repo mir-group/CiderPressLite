@@ -1,4 +1,3 @@
-name: cider
 dependencies:
   - libxc
   - conda-forge::fftw

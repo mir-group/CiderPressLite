@@ -16,7 +16,8 @@ We do not yet have a PyPI package for CiderPress, as the setup procedure and dep
 We recommend creating a conda environment from scratch for setting up CiderPressLite as described below, as this makes it much easier to quickly install compatible version of the dependencies of CiderPress, PySCF, and GPAW. In case you want to install using a different setup, here is a list of dependencies:
 - Python 3.9-3.11 (Python 3.12 not supported)
 - An installation of PySCF
-- An installation of GPAW compiled with LibXC (if you want to run periodic DFT calculations)
+- An installation of GPAW compiled with LibXC and FFTW (if you want to run periodic DFT calculations)
+- Intel Math Kernel Library
 - The Python package requirements in `requirements.txt`
 - Fortran, C, and C++ compilers with OpenMP support.
 One of the requirements in `requirements.txt` is the Intel Math Kernel Library. This module is particularly important because the CiderPress C extensions need to link to it and make use of the MKL DFTI library. Please make sure that either your MKL headers and shared libraries are in the `include` and `lib` directories of your Python environment, respectively, or that they are  in your `C_INCLUDE_PATH` and `LIBRARY_PATH`/`LD_LIBRARY_PATH`, respectively.
@@ -31,13 +32,14 @@ conda create -n <my_env> python=3.11
 conda activate <my_env>
 ```
 Python 3.9-3.11 (not 3.12) are supported. In later versions, we will tryo to move away from deprecated `distutils` tools so that we can support Python 3.12.
-2. Install dependencies (three options). **Option 1**: The simplest way to do this is to use `full_env.yml`:
-```bash
-conda env update --file <CiderPressLite>/full_env.yaml
-```
-**Option 2**: (Preferred option for multi-node jobs) If you find compatibility issues of the conda openmpi with your cluster (or just prefer your own compilers), you can provide your own MPI, C compiler, and Fortran compiler, and install the other dependencies using `nocomp_env.yml`:
+2. Install dependencies (three options).
+**Option 1**: (Preferred option for multi-node jobs) If you provide your own MPI, C compiler, and Fortran compiler, you can install all the other dependencies using `nocomp_env.yml`:
 ```bash
 conda env update --file <CiderPressLite>/nocomp_env.yaml
+```
+**Option 2**: The simplest way to do install everything is to use `full_env.yml`, which also installs the mpicc, gcc, g++, and gfortran compilers. Note that this approach will likely not work if you need to run MPI jobs on a cluster, as the conda openmpi will not be linked to the scheduler properly.
+```bash
+conda env update --file <CiderPressLite>/full_env.yaml
 ```
 **Option 3**: As one more option, you can install components more manually. Start with the compilers and libxc. You can also use your own compilers, but this step helps ensure that everything is compatible. Note that all these compilers (plus libxc) must be installed via conda in one step, or else there will be compiler and library compatibility issues.
 ```bash
@@ -52,23 +54,19 @@ Finally, install the other dependencies
 cd <CiderPressLite>
 pip install -r requirements.txt
 ```
-5. Build C and Fortran extensions and install CiderPress
+3. Build C and Fortran extensions and install CiderPress
 ```bash
-python setup.py build_ext --inplace
-python setup.py build
-python setup.py install
+python setup.py build install
 ```
-6. (If using GPAW) Install GPAW from source. We recommend using our siteconfig.py to link gpaw to MPI and MKL for simplicity and speed. (gitlab.com/gpaw/gpaw)
+4. (If using GPAW) Install GPAW from source. We recommend using our siteconfig.py to link gpaw to MPI and MKL for simplicity and speed. (gitlab.com/gpaw/gpaw)
 ```bash
 cd <place you want to save the GPAW source>
 git clone https://gitlab.com/gpaw/gpaw.git
 cd gpaw
 cp <CiderPressLite>/gpaw_siteconfig.py .
-python setup.py build_ext --inplace
-python setup.py build
-python setup.py install
+python setup.py build install
 ```
-Note: Currently CiderPress does not support the new GPAW version (gpaw.new), but we plan to support it in the future.
+**Note**: Currently CiderPress does not support the new GPAW version (gpaw.new), but we plan to support it in the future.
 
 ## How can I run a CIDER calculation?
 
