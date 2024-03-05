@@ -91,4 +91,4 @@ CiderPress has a few known issues that we are currently investigating. Please be
 ## Questions and Comments
 
 Find a bug? Areas of code unclearly documented? Other questions? Feel free to contact
-Kyle Bystrom at kylebystrom@gmail.com AND/OR create an issue on the Github page at https://github.com/mir-group/CiderPress.
+Kyle Bystrom at kylebystrom@gmail.com AND/OR create an issue on the Github page at https://github.com/mir-group/CiderPressLite.
