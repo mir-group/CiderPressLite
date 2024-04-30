@@ -50,16 +50,8 @@ else:
     atoms = molecule(name)
     atoms.center(vacuum=vacuum)
 
-if functional == 'CIDER':
-    functional = 'functionals/TEST_CIDER_MGGA.yaml'
-elif functional == 'TEST_ORB':
-    import yaml
-    with open('functionals/HOPT22.yaml', 'r') as f:
-        functional = yaml.load(f, Loader=yaml.CLoader)
-elif functional == 'TEST_LIN':
-    import yaml
-    with open('functionals/LIN_HOPT22.yaml', 'r') as f:
-        functional = yaml.load(f, Loader=yaml.CLoader)
+if functional.startswith('CIDER'):
+    functional = 'functionals/{}.yaml'.format(functional)
 formula = Counter(atoms.get_atomic_numbers())
 
 calc_num = 0
@@ -82,7 +74,6 @@ def perform_calc(atoms, xc, spinpol, hund=False, spin=None, charge=None):
     atoms.calc = CiderGPAW(
         h=0.15,
         xc='PBE',
-        #xc=xc,
         mode=PW(1000),
         txt='calc-{}.txt'.format(calc_num),
         maxiter=200,
@@ -99,9 +90,6 @@ def perform_calc(atoms, xc, spinpol, hund=False, spin=None, charge=None):
     calc_num += 1
     etot = atoms.get_potential_energy()
     
-    #etot += atoms.calc.get_xc_difference(xc)
-    #calc_num += 1
-
     del atoms.calc
     del xc
     print('Energy', etot)
@@ -109,12 +97,6 @@ def perform_calc(atoms, xc, spinpol, hund=False, spin=None, charge=None):
 
 etot_ae = 0
 
-#for el, num in formula.items():
-#    atom = Atoms(chemical_symbols[el])
-#    atom.set_cell((2*vacuum-0.25,2*vacuum,2*vacuum+0.25))
-#    atom.center()
-#    etot_atom = perform_calc(atom, functional, True, True)
-#    etot_ae += num * etot_atom
 etot_mol = perform_calc(atoms, functional, spinpol, spin=spin, charge=charge)
 etot_ae -= etot_mol
 for el, num in formula.items():

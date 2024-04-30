@@ -59,10 +59,10 @@ def setUpModule():
     mlfuncs = [
         NormGPFunctional.load('functionals/{}.yaml'.format(fname)) for fname in \
         [
-            'TEST_SL_GGA',
-            'TEST_SL_MGGA',
-            'TEST_CIDER_GGA',
-            'TEST_CIDER_MGGA',
+            'CIDER23_SL_GGA',
+            'CIDER23_SL_MGGA',
+            'CIDER23_NL_GGA',
+            'CIDER23_NL_MGGA',
         ]
     ]
     mol = gto.Mole()

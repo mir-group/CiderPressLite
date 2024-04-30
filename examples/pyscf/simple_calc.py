@@ -22,7 +22,7 @@ from pyscf import gto, dft
 from ciderpress.dft import ri_cider
 
 
-mlfunc = 'functionals/TEST_CIDER_MGGA.yaml'
+mlfunc = 'functionals/CIDER23_NL_MGGA.yaml'
 
 mol = gto.M(
     atom='F 0.0 0.0 0.0; F 0.0 0.0 1.42',

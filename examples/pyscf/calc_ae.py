@@ -80,87 +80,9 @@ else:
     atoms.center(vacuum=4)
 
 if functional.startswith('CIDER'):
-    if functional == 'CIDER_SL_GGA':
-        functional = 'TEST_SL_GGA'
-    elif functional == 'CIDER_SL_MGGA':
-        functional = 'TEST_SL_MGGA'
-    elif functional == 'CIDER_NL_GGA':
-        functional = 'TEST_CIDER_GGA'
-    elif functional == 'CIDER_NL_MGGA':
-        functional = 'TEST_CIDER_MGGA'
-    elif functional == 'CIDER_KXED':
-        functional = 'TEST_CIDER_TAUX'
-    else:
-        raise ValueError('Unrecognized example CIDER functional')
     functional = 'functionals/{}.yaml'.format(functional)
     is_cider = True
     mlfunc = functional
-elif functional == 'TEST':
-    is_cider = True
-    mlfunc = functional = 'functionals/BIG_SPLINE.joblib'
-elif functional == 'TEST_ORB':
-    is_cider = True
-    mlfunc = functional = 'functionals/BIG_ORB_SPLINE5.joblib'
-elif functional == 'TEST_TRAIN':
-    is_cider = True
-    import yaml
-    functional = 'CIDER_TEST'
-    with open('functionals/ABTEST{}.yaml'.format(sys.argv[5]), 'r') as f:
-        mlfunc = yaml.load(f, Loader=yaml.CLoader)
-elif functional == 'TEST_ABL':
-    is_cider = True
-    import yaml
-    functional = 'CIDER_TEST'
-    with open('functionals/HOPT{}.yaml'.format(sys.argv[5]), 'r') as f:
-        mlfunc = yaml.load(f, Loader=yaml.CLoader)
-elif functional == 'TEST_ABL_MW':
-    is_cider = True
-    import yaml
-    functional = 'CIDER_TEST'
-    with open('functionals/MW_HOPT{}.yaml'.format(sys.argv[5]), 'r') as f:
-        mlfunc = yaml.load(f, Loader=yaml.CLoader)
-elif functional == 'TEST_ABL_MWHH':
-    is_cider = True
-    import yaml
-    functional = 'CIDER_TEST'
-    with open('functionals/MWHH_HOPT{}.yaml'.format(sys.argv[5]), 'r') as f:
-        mlfunc = yaml.load(f, Loader=yaml.CLoader)
-elif functional == 'TEST_ABL_VWHH':
-    is_cider = True
-    import yaml
-    functional = 'CIDER_TEST'
-    with open('functionals/VWHH_HOPT{}.yaml'.format(sys.argv[5]), 'r') as f:
-        mlfunc = yaml.load(f, Loader=yaml.CLoader)
-elif functional == 'TEST_ABL_WWHH':
-    is_cider = True
-    import yaml
-    functional = 'CIDER_TEST'
-    with open('functionals/WWHH_HOPT{}.yaml'.format(sys.argv[5]), 'r') as f:
-        mlfunc = yaml.load(f, Loader=yaml.CLoader)
-elif functional == 'TEST_ABL_SL':
-    is_cider = True
-    import yaml
-    functional = 'CIDER_TEST'
-    with open('functionals/SL_HOPT{}.yaml'.format(sys.argv[5]), 'r') as f:
-        mlfunc = yaml.load(f, Loader=yaml.CLoader)
-elif functional == 'TEST_ABL_LIN':
-    is_cider = True
-    import yaml
-    functional = 'CIDER_TEST'
-    with open('functionals/LIN_HOPT{}.yaml'.format(sys.argv[5]), 'r') as f:
-        mlfunc = yaml.load(f, Loader=yaml.CLoader)
-elif functional == 'TEST_ORB2':
-    import yaml
-    is_cider = True
-    functional = 'CIDER_TEST'
-    with open('SPLINE.yaml', 'r') as f:
-        mlfunc = yaml.load(f, Loader=yaml.CLoader)
-elif functional == 'TEST_VH':
-    import yaml
-    is_cider = True
-    functional = 'CIDER_VH'
-    with open('functionals/TEST_VH_{}.yaml'.format(sys.argv[5]), 'r') as f:
-        mlfunc = yaml.load(f, Loader=yaml.CLoader)
 else:
     is_cider = False
 formula = Counter(atoms.get_atomic_numbers())

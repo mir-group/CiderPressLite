@@ -50,8 +50,8 @@ else:
     atoms = molecule(name)
     atoms.center(vacuum=vacuum)
 
-if functional == 'CIDER':
-    functional = 'functionals/TEST_SL_GGA.yaml'
+if functional.startswith('CIDER'):
+    functional = 'functionals/{}.yaml'.format(functional)
 formula = Counter(atoms.get_atomic_numbers())
 
 calc_num = 0
@@ -74,7 +74,6 @@ def perform_calc(atoms, xc, spinpol, hund=False, spin=None, charge=None):
     atoms.calc = GPAW(
         h=0.15,
         xc='PBE',
-        #xc=xc,
         mode=PW(1000),
         txt='nccalc-{}.txt'.format(calc_num),
         maxiter=200,
