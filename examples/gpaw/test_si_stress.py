@@ -87,7 +87,7 @@ if __name__ == '__main__':
     xc = get_xc('functionals/CIDER23_NL_GGA.yaml')
     s_numerical = np.array([-0.00261187, -0.03790705, -0.03193711,
                             -0.0209582,   0.13427714,  0.00928778])
-    # test_pw_si_stress(xc, s_numerical=None)
+    test_pw_si_stress(xc, s_numerical=None)
 
     xc = get_xc('functionals/CIDER23_NL_MGGA_DTR.yaml')
     s_numerical = np.array([-0.00681636, -0.04026119, -0.03689781,
@@ -95,19 +95,19 @@ if __name__ == '__main__':
     test_pw_si_stress(xc, s_numerical=None)
 
     xc = get_xc('functionals/CIDER23_SL_GGA.yaml')
-    #s_numerical = np.array([-0.00261187, -0.03790705, -0.03193711,
-    #                        -0.0209582,   0.13427714,  0.00928778])
+    s_numerical = np.array([-0.00261187, -0.03790705, -0.03193711,
+                            -0.0209582,   0.13427714,  0.00928778])
     test_pw_si_stress(xc, s_numerical=None)
 
     xc = get_xc('functionals/CIDER23_SL_MGGA.yaml')
-    #s_numerical = np.array([-0.00681636, -0.04026119, -0.03689781,
-    #                        -0.02227667,  0.14441494,  0.00907815])
+    s_numerical = np.array([-0.00681636, -0.04026119, -0.03689781,
+                            -0.02227667,  0.14441494,  0.00907815])
     test_pw_si_stress(xc, s_numerical=None)
 
     xc = get_xc('functionals/CIDER23_NL_GGA.yaml', use_paw=False)
     s_numerical = np.array([0.00205983, -0.03604186, -0.02808641,
                             -0.02021089,  0.1333823,   0.00980205])
-    test_pw_si_stress(xc, use_pp=True, s_numerical=s_numerical)
+    test_pw_si_stress(xc, use_pp=True, s_numerical=None)
    
     # It is not possible to evaluate MGGA stress with pseudopotentials.
     # It is necessary to use PAW instead.

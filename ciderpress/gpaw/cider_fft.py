@@ -413,7 +413,6 @@ def get_cider_exp_gga(self, rho, sigma,
                       return_derivs=False):
     sr = np.sign(rho)
     rho = np.abs(rho)
-    amin = 0.05
     CFC = 0.3 * (3 * np.pi**2)**(2.0/3)
     fac = fac_mul * 1.2 * (6 * np.pi**2)**(2.0/3) / np.pi
     if self.nspin==1:
