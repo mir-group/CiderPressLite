@@ -10,6 +10,14 @@ Machine Learning (ML) has recently gained attention as a means to fit more accur
 
 We want to make clear that both the code and the functionals themselves are experimental. The code base will likely change significantly in the next few years. Therefore, please read the installation guidance, usage instructions, examples, and known issues thoroughly before using CiderPress.
 
+## Downloading CIDER Functionals
+
+The SL-GGA, NL-GGA, SL-MGGA, NL-MGGA, NL-MGGA-PBE, and NL-MGGA-DTR functionals presented in the paper at https://arxiv.org/abs/2303.00682 are available for download. To get them, simply enter the CiderPressLite directory and run the `download_functionals.py` script:
+```
+python scripts/download_functionals.py
+```
+This will place all six of these functionals in a subdirectory called `functionals` in the CiderPressLite directory. If you use these functionals or the CiderPress code, please cite the paper in the "Citing" section below.
+
 ## Installation
 
 We do not yet have a PyPI package for CiderPress, as the setup procedure and dependencies are a bit complex and might undergo significant changes when we release the full version. However, we have done our best to make installation fast and straightforward.
@@ -92,3 +100,27 @@ CiderPress has a few known issues that we are currently investigating. Please be
 
 Find a bug? Areas of code unclearly documented? Other questions? Feel free to contact
 Kyle Bystrom at kylebystrom@gmail.com AND/OR create an issue on the Github page at https://github.com/mir-group/CiderPressLite.
+
+## Citing
+
+If you find CiderPress useful, please encourage its development by
+citing the following paper in your research:
+
+```
+@ARTICLE{2023arXiv230300682B,
+       author = {{Bystrom}, Kyle and {Kozinsky}, Boris},
+        title = "{Nonlocal Machine-Learned Exchange Functional for Molecules and Solids}",
+      journal = {arXiv e-prints},
+     keywords = {Physics - Chemical Physics, Condensed Matter - Materials Science, Physics - Computational Physics},
+         year = 2023,
+        month = mar,
+          eid = {arXiv:2303.00682},
+        pages = {arXiv:2303.00682},
+          doi = {10.48550/arXiv.2303.00682},
+archivePrefix = {arXiv},
+       eprint = {2303.00682},
+ primaryClass = {physics.chem-ph},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2023arXiv230300682B},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+```
