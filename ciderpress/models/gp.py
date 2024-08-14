@@ -67,7 +67,8 @@ def y_to_xed_chachiyo(y, rho, s2):
 
 def pbe_fx(s2):
     kappa = 0.804
-    mu = 0.2195149727645171
+    # mu = 0.2195149727645171
+    mu = 0.21951
     mk = mu / kappa
     fac = 1.0 / (1 + mk * s2)
     fx = 1 + kappa - kappa * fac

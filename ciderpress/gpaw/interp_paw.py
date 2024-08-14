@@ -159,6 +159,15 @@ class DiffPAWXCCorrection:
         for name, n_g in zip(names, n_g_list):
             if n_g is None:
                 continue
+            x1 = xcc.rgd.r_g[2] - xcc.rgd.r_g[1]
+            x2 = xcc.rgd.r_g[3] - xcc.rgd.r_g[1]
+            xe = xcc.rgd.r_g[0] - xcc.rgd.r_g[1]
+            f0, f1, f2 = n_g[1:4]
+            n_g = n_g.copy()
+            a = ( (f2 - f0) / x2 - (f1 - f0) / x1 ) / (x2 - x1)
+            b = -a * x1 + (f1 - f0) / x1
+            c = f0
+            n_g[0] = a * xe**2 + b * xe + c
             core_dens[name] = n_g
             core_dens['d'+name] = xcc.rgd.derivative(n_g)
 
