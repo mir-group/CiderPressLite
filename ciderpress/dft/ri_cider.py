@@ -23,7 +23,7 @@ from pyscf.scf import hf
 from pyscf.dft.numint import NumInt, _contract_rho, _rks_gga_wv0, \
     _uks_gga_wv0, _rks_mgga_wv0, _uks_mgga_wv0, _tau_dot, _format_uks_dm, \
     _dot_ao_ao_sparse, _scale_ao_sparse, _tau_dot_sparse, NBINS, \
-    _scale_ao, _dot_ao_ao
+    _scale_ao, _dot_ao_ao, xc_deriv
 from pyscf.dft.libxc import eval_xc, is_nlc, is_gga
 
 from ciderpress.dft.cider_kernel import call_xc_kernel_gga, call_xc_kernel_mgga, \
@@ -1327,6 +1327,46 @@ class SLCiderNumInt(NumInt):
         if is_nlc(xc_code):
             return 'NLC'
         return 'GGA' if self.is_gga else 'MGGA'
+
+    def eval_xc_eff(self, xc_code, rho, deriv=1, omega=None, xctype=None, verbose=None):
+        if omega is None: omega = self.omega
+        if xctype is None: xctype = self._xc_type(xc_code)
+        rhop = numpy.asarray(rho)
+
+        if xctype == 'LDA':
+            spin_polarized = rhop.ndim >= 2
+        else:
+            spin_polarized = rhop.ndim == 3
+
+        if spin_polarized:
+            assert rhop.shape[0] == 2
+            spin = 1
+            if rhop.shape[1] == 5:  # MGGA
+                ngrids = rhop.shape[2]
+                rhop = numpy.empty((2, 6, ngrids))
+                rhop[0,:4] = rho[0][:4]
+                rhop[1,:4] = rho[1][:4]
+                rhop[:,4] = 0
+                rhop[0,5] = rho[0][4]
+                rhop[1,5] = rho[1][4]
+        else:
+            spin = 0
+            if rhop.shape[0] == 5:  # MGGA
+                ngrids = rho.shape[1]
+                rhop = numpy.empty((6, ngrids))
+                rhop[:4] = rho[:4]
+                rhop[4] = 0
+                rhop[5] = rho[4]
+
+        exc, vxc, fxc, kxc = self.eval_xc(xc_code, rhop, spin, 0, deriv, omega,
+                                          verbose)
+        if deriv > 2:
+            kxc = xc_deriv.transform_kxc(rhop, fxc, kxc, xctype, spin)
+        if deriv > 1:
+            fxc = xc_deriv.transform_fxc(rhop, vxc, fxc, xctype, spin)
+        if deriv > 0:
+            vxc = xc_deriv.transform_vxc(rhop, vxc, xctype, spin)
+        return exc, vxc, fxc, kxc
 
     def eval_xc(self, xc_code, rho, spin=0, relativity=0, deriv=1, omega=None,
                 verbose=None):

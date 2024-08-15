@@ -109,8 +109,9 @@ if is_cider:
         # Can typically use smaller aux basis like def2-universal-jfit since
         # no EXX is evaluated, but we set the auxbasis to the larger, more
         # conservative def2-universal-jkfit here.
-        ks.with_df.auxbasis = "def2-universal-jkfit"
+        ks.with_df.auxbasis = "def2-universal-jfit"
         ks = ks.apply(scf.addons.remove_linear_dep_)
+        ks.small_rho_cutoff = 0.0
         etot = ks.kernel()
         return etot
 else:
@@ -134,7 +135,6 @@ else:
 
 etot_mol = run_calc(mol, spinpol)
 etot_ae = -1 * etot_mol
-
 for Z, count in formula.items():
     atom = gto.M(atom=chemical_symbols[Z], basis=BAS, ecp=BAS,
                  spin=int(ground_state_magnetic_moments[Z]),
