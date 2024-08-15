@@ -26,19 +26,14 @@ savedir = os.path.basename(os.path.join(basedir, '../functionals'))
 
 os.makedirs(savedir, exist_ok=True)
 
-links = {
-    'NL_GGA': '1UNxxvYpxc8RkywxIynbenkLEMGviIce1',
-    'NL_MGGA_DTR': '1-233LBivti-UDfbSuOMdPZuyC_Gibto0',
-    'NL_MGGA_PBE': '15x8s_Pf3_iYoAHl_sWChB2q1HFif1jFA',
-    'NL_MGGA': '1wwYFSJsZX_jhBSlsXVeggQutODXC2KP0',
-    'SL_GGA': '1qD_IpXQNYUbT8Y7nLt4e4pA1E1dNntu7',
-    'SL_MGGA': '18OFNglYpcPXHzXwFcRXeJn9VCLFtC7Zd',
-}
-
 os.chdir(savedir)
-cmd = "wget --no-check-certificate 'https://docs.google.com/uc?export=download&id={}' -O {}"
-for name, linkid in links.items():
-    fname = 'CIDER23_{}.yaml'.format(name)
-    mycmd = cmd.format(linkid, fname)
-    subprocess.call(mycmd, shell=True)
+cmd = "wget 'https://zenodo.org/records/13323474/files/cider23_{}.zip?download=1' -O cider23_{}.zip"
+unzip = "unzip cider23_{}.zip"
+mv = "mv cider23_{}/* ."
+rm = "rm -r cider23_{} cider23_{}.zip"
+for fmt in ["functionals", "joblibs"]:
+    subprocess.call(cmd.format(fmt, fmt), shell=True)
+    subprocess.call(unzip.format(fmt), shell=True)
+    subprocess.call(mv.format(fmt), shell=True)
+    subprocess.call(rm.format(fmt, fmt), shell=True)
 
